@@ -83,7 +83,13 @@ terminal_lines=$(tput lines);
 
 # ------------------------------------		Program entry point (C-style)		------------------------------------
 main () {
-	#	GETOPTS	- Analizza tutti i parametri in ingresso allo script
+	# Check if needed commands are installed
+	checkDependencies "sshpass" "sed" "awk" "ssh" || {
+		exit 1;
+	}
+
+
+	# GETOPTS - Analizza tutti i parametri in ingresso allo script
 	while getopts ":Pchf:" arg; do
 		case $arg in
 			P)
@@ -126,19 +132,8 @@ main () {
 		esac
 	done
 	
-	# 	GETOPTS - Rimuove tutti i parametri già elaborati dal GETOPTS
+	# GETOPTS - Rimuove tutti i parametri già elaborati dal GETOPTS
 	shift $((OPTIND-1));
-	
-
-
-	# Controllo se esiste sshpass
-	which sshpass >/dev/null 2>&1 || {
-		printf "${red}ERRORE${default} - SSHPASS non trovato\n";
-		printf "Esso viene utilizzato all'interno di questo script per l'autenticazione.\n";
-		printf "Si prega di installarlo e poi rilanciare questo script\n";
-
-		exit 1;
-	}
 
 
 
@@ -569,7 +564,7 @@ function check_macchina_raggiungibile {
 
 			# Se ha trovato macchine simili ma non quella esatta le mostra a video
 			[ ! -z "$macchine_hosts" ] && {
-				echo -e "${red}ERRORE${default} - Macchina ${macchina} non trovata [ ${macchine_hosts} ]\n";
+				printf "${red}ERRORE${default} - Macchina ${macchina} non trovata [ ${macchine_hosts} ]\n\n";
 
 
 				return 1;
@@ -581,7 +576,7 @@ function check_macchina_raggiungibile {
 
 					return 0;
 				} || {
-					echo -e "${red}ERRORE${default} - Macchina ${macchina} non censita nel file hosts\n";
+					printf "${red}ERRORE${default} - Macchina ${macchina} non censita nel file hosts\n\n";
 
 
 					return 1;
@@ -748,6 +743,9 @@ function user_confirmation {
 # Originale: GioIan 25/05/2017 - aix_chage
 # Modficata: Salvarani 30/12/2019 - remote_gio_aix_chage
 # Modficata: Salvarani 30/01/2019 - Modificato formato output data e rimosso output Username
+#
+# Descrizione:
+#	Lo script, analizzando i file di sistema, mostra la scadenza della password per l'utenza fornita
 function remote_gio_aix_chage {
 	local ssh_username="$1";
 	local ssh_password="$2";
@@ -758,11 +756,6 @@ function remote_gio_aix_chage {
 
 	result=$(sshpass -p $ssh_password ssh -o LogLevel=QUIET -tt $ssh_username@$ssh_macchina <<-END_OF_SSH
 		printf "$ssh_password\\n" | sudo -S su -; sudo su -
-
-		#!/usr/bin/ksh
-		# GioIan 25/05/2017 - aix_chage
-		VERSION="1.1 25/05/2017"
-		# Lo script, analizzando i file di sistema, mostra la scadenza della password per l'utenza fornita
 
 		# Funzioni
 		DTCe2h () {
@@ -914,4 +907,46 @@ function remote_linux_chage {
 	echo "$result" | grep -E "ERRORE|$unique_session_id" | grep -v "sed" | sed "s/^$unique_session_id//"
 }
 
+# Dependencies check function: 
+#       Checks if all programs passed as parameters exist. 
+#       Prints to stdOut programs that weren't found
+# 
+#       Usage: 
+#           checkDependencies program1 program2 program3 || { list_of_commands; }
+# 
+function checkDependencies {
+	# Colors
+	local red='\033[0;31m';
+	local green='\033[0;32m';
+	local yellow='\033[0;33m';
+	local default='\033[0m';
+	
+	# Declare variables
+    local progs="$@";
+    local not_found_counter=0; 
+    local total_programs=$(echo "$progs" | wc -w); 
+
+	# Check every program
+    for p in ${progs}; do
+        command -v "$p" >/dev/null 2>&1 || {
+            printf "${yellow}WARNING${default} - Program required is not installed: $p\n";
+
+            not_found_counter=$(expr $not_found_counter + 1);
+        }
+    done
+
+	# Print error
+    [[ $not_found_counter -ne 0 ]] && {
+        printf "\n"
+        printf "${red}ERROR${default} - %d of %d programs were missing. Execution aborted\n" "$not_found_counter" "$total_programs";
+
+        return 1;
+    }
+
+    return 0;
+}
+
+
+
+# Start main function
 main "$@"
