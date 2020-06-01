@@ -214,14 +214,23 @@ function cambio_password {
 	local vecchia_password="${3}";
 	local nuova_password="${4}";
 	
+	local proxy_username="${5}";
+	local proxy_password="${6}";	
+
+
+	local login_username="${5}";
+	local login_password="${6}";
+	
 	local comando_cambio_password="";
 	local remote_system_os="";
-	
 	
 	
 	check_macchina_raggiungibile "$macchina" || {
 		return 1;
 	}
+
+
+
 
 
 	# Controlla se la password inserita è valida e al tempo stesso restituisce il Sistema Operativo della macchina
