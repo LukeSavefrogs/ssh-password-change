@@ -1,5 +1,5 @@
 # Batch SSH Password change
-Change passwords for a specific user in a remote Server (Linux or AIX) using SSH in BASH
+Change passwords for a specific user in multiple remote Servers (Linux or AIX) using SSH in BASH
 
 ## Table of Contents
 <!-- TOC -->
