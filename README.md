@@ -11,11 +11,11 @@ Change passwords for a specific user in a remote Server (Linux or AIX) using SSH
     - [Usage](#usage)
         - [Single Mode](#single-mode)
         - [Batch Mode](#batch-mode)
-            - [Create the file](#create-the-file)
+            - [1. Create the file](#1-create-the-file)
                 - [Heading](#heading)
                 - [Body](#body)
                 - [Example](#example)
-            - [Launch the script...](#launch-the-script)
+            - [2. Launch the script...](#2-launch-the-script)
                 - [Example](#example-1)
     - [Options](#options)
     - [Notes](#notes)
@@ -32,8 +32,6 @@ The script will check if you fullfill all the requirements.
 - **Bash** version >= **4.0**
 - **Sshpass** (download for [Linux-Unix](https://www.cyberciti.biz/faq/noninteractive-shell-script-ssh-password-provider/) and [Windows](https://gist.github.com/arunoda/7790979#installing-from-the-source))
 
----
-
 ## Usage
 ### Single Mode
 Don't know why you would, but you can also use this script to change the password of a single server. 
@@ -47,7 +45,7 @@ This is by the way the most useful feature of the script and the one i built it 
 
 To use it you'll need to **create a file** containing all the hostname/ip to ssh into and other data (optional) and **feed it to the script** by using the `-f` parameter followed by the filename
 
-#### Create the file
+#### 1. Create the file
 ##### Heading
 - The first line MUST be the **heading**, where you can specify the fields you want to use. They can be:
     -  *MACCHINA*: The **target server** (can be an hostname specified in your hosts file, an IP or a hostname reachable through a dns)
@@ -74,7 +72,7 @@ MACCHINA;UTENZA;PASSWORD;NUOVA_PASWORD
 172.16.1.5;spiderman;ugly_pw;beautiful_pw
 ```
 
-#### Launch the script...
+#### 2. Launch the script...
 ...and feed it with the file you just created by using the `-f` parameter.
 
 ##### Example
