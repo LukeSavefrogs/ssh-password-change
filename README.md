@@ -25,8 +25,6 @@ In the project i am working on since last year u have to manage multiple persona
 
 This is pretty time-consuming and very boring, so i decided to try and build something that did that for me :wink:
 
----
-
 ## Requirements
 The script will check if you fullfill all the requirements.
 - **Bash** version >= **4.0**
@@ -81,8 +79,8 @@ MACCHINA;UTENZA;PASSWORD;NUOVA_PASWORD
 ---
 
 ## Options
-- `-f`: Specify the file to be used for Batch operations (see the [Batch section](#batch))
-- `-c`: If used in BATCH_MODE, don't change passwords. Just check the expiral date (`chage -l`-like output) of every entry
+- `-f`: Specify the file to be used for Batch operations (see the [Batch Mode](#batch))
+- `-c`: If used in Batch Mode, **don't change passwords**. Just check the expiral date (`chage -l`-like output) of every entry
 - `-P`: Enable the PICO rule (**only for** the **PICO Trenitalia** project i work at):
     - Uppercase all AIX username (hostname ending with `x`) 
     - Lowercase the Linux ones (hostname ending with `r`). 
