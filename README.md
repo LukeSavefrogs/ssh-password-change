@@ -9,14 +9,14 @@ Change passwords for a specific user in a remote Server (Linux or AIX) using SSH
     - [Introduction](#introduction)
     - [Requirements](#requirements)
     - [Usage](#usage)
-        - [Single](#single)
-        - [Batch](#batch)
+        - [Single Mode](#single-mode)
+        - [Batch Mode](#batch-mode)
             - [Heading](#heading)
             - [Body](#body)
             - [Example](#example)
         - [Launch the script and feed it with the file](#launch-the-script-and-feed-it-with-the-file)
-    - [Notes](#notes)
     - [Options](#options)
+    - [Notes](#notes)
 
 <!-- /TOC -->
 
@@ -25,21 +25,24 @@ In the project i am working on since last year u have to manage multiple persona
 
 This is pretty time-consuming and very boring, so i decided to try and build something that did that for me :wink:
 
+---
 
 ## Requirements
 The script will check if you fullfill all the requirements.
 - **Bash** version >= **4.0**
 - **Sshpass** (download for [Linux-Unix](https://www.cyberciti.biz/faq/noninteractive-shell-script-ssh-password-provider/) and [Windows](https://gist.github.com/arunoda/7790979#installing-from-the-source))
 
+---
+
 ## Usage
-### Single
+### Single Mode
 Don't know why you would, but you can also use this script to change the password of a single server. 
 
 To do that, simply start the script with the following **positional** parameters:
 ```bash
 ./password_change2.sh HOSTNAME_OR_IP USERNAME OLD_PASSWORD NEW_PASSWORD
 ```
-### Batch
+### Batch Mode
 This is by the way the most useful feature of the script and the one i built it for...
 
 To use it you'll need to **create a file** containing all the hostname/ip to ssh into and other data (optional) and **feed it to the script** by using the `-f` parameter followed by the filename
@@ -75,10 +78,7 @@ MACCHINA;UTENZA;PASSWORD;NUOVA_PASWORD
 ./password_change2.sh -f my_list.txt
 ```
 
-## Notes
-- If the **username is the same** for all the hosts you want to login into, you can **omit** it from the heading and the data. The script will automatically **ask** ONCE for it and use it throughout the process. The same goes for the new/old password.
-
-- The help embedded in the script and the headings as of 06/2020 are ONLY in Italian. I'm planning to convert them in English language
+---
 
 ## Options
 - `-f`: Specify the file to be used for Batch operations (see the [Batch section](#batch))
@@ -87,3 +87,11 @@ MACCHINA;UTENZA;PASSWORD;NUOVA_PASWORD
     - Uppercase all AIX username (hostname ending with `x`) 
     - Lowercase the Linux ones (hostname ending with `r`). 
 - `-h`: Print the help and exit the script
+
+---
+
+## Notes
+- If the **username is the same** for all the hosts you want to login into, you can **omit** it from the heading and the data. The script will automatically **ask** ONCE for it and use it throughout the process. The same goes for the new/old password.
+
+- The help embedded in the script and the headings as of 06/2020 are ONLY in Italian. I'm planning to convert them in English language
+
