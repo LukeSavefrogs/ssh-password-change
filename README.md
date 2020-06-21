@@ -11,10 +11,12 @@ Change passwords for a specific user in a remote Server (Linux or AIX) using SSH
     - [Usage](#usage)
         - [Single Mode](#single-mode)
         - [Batch Mode](#batch-mode)
-            - [Heading](#heading)
-            - [Body](#body)
-            - [Example](#example)
-        - [Launch the script and feed it with the file](#launch-the-script-and-feed-it-with-the-file)
+            - [Create the file](#create-the-file)
+                - [Heading](#heading)
+                - [Body](#body)
+                - [Example](#example)
+            - [Launch the script...](#launch-the-script)
+                - [Example](#example-1)
     - [Options](#options)
     - [Notes](#notes)
 
@@ -45,7 +47,8 @@ This is by the way the most useful feature of the script and the one i built it 
 
 To use it you'll need to **create a file** containing all the hostname/ip to ssh into and other data (optional) and **feed it to the script** by using the `-f` parameter followed by the filename
 
-#### Heading
+#### Create the file
+##### Heading
 - The first line MUST be the **heading**, where you can specify the fields you want to use. They can be:
     -  *MACCHINA*: The **target server** (can be an hostname specified in your hosts file, an IP or a hostname reachable through a dns)
     -  *UTENZA*: The **username** you want to  change the password [optional]
@@ -54,13 +57,13 @@ To use it you'll need to **create a file** containing all the hostname/ip to ssh
 
 - You can separate the fields using <kbd>;</kbd>, <kbd>,</kbd> or <kbd>TAB</kbd> character. The separator used for the heading is going to determine the one used for ALL the other lines
 
-#### Body 
+##### Body 
 - The lines of the body (the ones containing the *actual* data) **MUST** follow the same **field order** and **MUST** not be **blank** or ignore a field, otherwise they will be ***skipped***
 
 - To **comment** out a line you can put at the start of the line the **<kbd>#</kbd>** character (*as if you were in a bash/python script*)
 
 
-#### Example
+##### Example
 Creating the file `my_list.txt` with the following
 content:
 ```
@@ -71,7 +74,10 @@ MACCHINA;UTENZA;PASSWORD;NUOVA_PASWORD
 172.16.1.5;spiderman;ugly_pw;beautiful_pw
 ```
 
-### Launch the script and feed it with the file
+#### Launch the script...
+...and feed it with the file you just created by using the `-f` parameter.
+
+##### Example
 ```bash
 ./password_change2.sh -f my_list.txt
 ```
@@ -80,7 +86,7 @@ MACCHINA;UTENZA;PASSWORD;NUOVA_PASWORD
 
 ## Options
 - `-f`: Specify the file to be used for Batch operations (see the [Batch Mode](#batch))
-- `-c`: If used in Batch Mode, **don't change passwords**. Just check the expiral date (`chage -l`-like output) of every entry
+- `-c`: If used in [Batch Mode](#batch), **don't change passwords**. Just check the expiral date (`chage -l`-like output) of every entry
 - `-P`: Enable the PICO rule (**only for** the **PICO Trenitalia** project i work at):
     - Uppercase all AIX username (hostname ending with `x`) 
     - Lowercase the Linux ones (hostname ending with `r`). 
