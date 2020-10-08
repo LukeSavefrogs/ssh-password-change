@@ -18,6 +18,8 @@
 #								in chiaro sul file history. Prima veniva 
 #								stampata, ora viene usato un file di 
 #								appoggio
+#
+#08-Ott-20		M.N				Aggiunto un piccolo controllo per la conn. sulla porta 22
 #************************************************************************
 #
 # TODOS:
@@ -587,6 +589,20 @@ function check_macchina_raggiungibile {
 
 	fi;
 
+	#Check sulla porta 22 della macchina con un timeout di 3 secondi per vedere se risulta raggiungibile
+
+	if [[ ! $(timeout 3 bash -c 'cat < /dev/null > /dev/tcp/${macchina}/22') ]]; then
+
+		printf "${red}ERRORE${default} - Macchina ${macchina} non raggiungibile sulla porta 22\n\n";
+		return 1;
+
+	fi;
+
+	#From the bash reference:
+	#/dev/tcp/host/port
+	#If host is a valid hostname or Internet address, and port is an integer
+	#port number or service name, Bash attempts to open a TCP connection to the
+	#corresponding socket.
 
 	return 0;
 }
