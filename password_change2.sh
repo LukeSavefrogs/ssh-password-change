@@ -591,7 +591,7 @@ function check_macchina_raggiungibile {
 
 	#Check sulla porta 22 della macchina con un timeout di 3 secondi per vedere se risulta raggiungibile
 
-	if [[ ! $(timeout 3 bash -c 'cat < /dev/null > /dev/tcp/${macchina}/22') ]]; then
+	if [[ $(timeout 3 bash -c 'cat < /dev/null > /dev/tcp/${macchina}/22') ]]; then
 
 		printf "${red}ERRORE${default} - Macchina ${macchina} non raggiungibile sulla porta 22\n\n";
 		return 1;
